@@ -39,12 +39,12 @@ vs_file = client.vector_stores.files.create_and_poll(
 print("vs_file.status:", vs_file.status)
 print("vs_file.last_error:", getattr(vs_file, "last_error", None))
 
-# --- Function to delete the created Vector Store ---
-def delete_vector_store(vector_store_id: str):
-    """Delete a vector store by its ID"""
-    resp = client.vector_stores.delete(vector_store_id)
-    print(f"Deleted Vector Store {vector_store_id}: {resp}")
+# # --- Function to delete the created Vector Store ---
+# def delete_vector_store(vector_store_id: str):
+#     """Delete a vector store by its ID"""
+#     resp = client.vector_stores.delete(vector_store_id)
+#     print(f"Deleted Vector Store {vector_store_id}: {resp}")
 
 
-# Example: delete the one we just created
-delete_vector_store(vs.id)
+# # Example: delete the one we just created
+# delete_vector_store(vs.id)

@@ -15,6 +15,9 @@ from openai import OpenAI
 from agents import set_default_openai_key, Agent, Runner, function_tool, ModelSettings, RunConfig
 from agents.tool import WebSearchTool, FileSearchTool
 from agents.extensions.handoff_prompt import RECOMMENDED_PROMPT_PREFIX
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # --- API key ---
 api_key = os.getenv("OPENAI_API_KEY")
@@ -123,7 +126,10 @@ guardrail_agent = Agent(
         "Provide a one-sentence reasoning. Only provide fields requested by the output schema."
     ),
     output_type=YarGuardOutput,
-    model_settings=ModelSettings(temperature=0)
+    model_settings=ModelSettings(
+        model_name="gpt-3.5-turbo",  
+        temperature=0
+    )
 )
 
 @input_guardrail
@@ -153,7 +159,10 @@ data_agent = Agent(
     tools=[web_search, file_search],
     input_guardrails=[tasha_guardrail],
     handoffs=[calculator_agent],
-    model_settings=ModelSettings(temperature=0),
+    model_settings=ModelSettings(
+        model_name="gpt-3.5-turbo",
+        temperature=0
+    ),
 )
 
 # Integration with Bedrock AgentCore
