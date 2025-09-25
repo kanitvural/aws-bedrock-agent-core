@@ -1,4 +1,4 @@
-AWS BEDROCK AGENT CORE 
+# AWS BEDROCK AGENT CORE 
 
 # Installation
 
