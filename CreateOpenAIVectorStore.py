@@ -4,11 +4,14 @@ import os, re
 from pathlib import Path
 from openai import OpenAI
 from agents import set_default_openai_key
+from dotenv import load_dotenv
+
+load_dotenv()
+
  
 
 # --- API key ---
 api_key = os.getenv("OPENAI_API_KEY")
-print(api_key)
 
 if not api_key:
     raise RuntimeError("Please set OPENAI_API_KEY.")
@@ -35,3 +38,13 @@ vs_file = client.vector_stores.files.create_and_poll(
 )
 print("vs_file.status:", vs_file.status)
 print("vs_file.last_error:", getattr(vs_file, "last_error", None))
+
+# --- Function to delete the created Vector Store ---
+def delete_vector_store(vector_store_id: str):
+    """Delete a vector store by its ID"""
+    resp = client.vector_stores.delete(vector_store_id)
+    print(f"Deleted Vector Store {vector_store_id}: {resp}")
+
+
+# Example: delete the one we just created
+delete_vector_store(vs.id)

@@ -15,6 +15,9 @@ from openai import OpenAI
 from agents import set_default_openai_key, Agent, Runner, function_tool, ModelSettings, RunConfig
 from agents.tool import WebSearchTool, FileSearchTool
 from agents.extensions.handoff_prompt import RECOMMENDED_PROMPT_PREFIX
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # --- API key ---
 api_key = os.getenv("OPENAI_API_KEY")
