@@ -4,9 +4,11 @@ import os, re
 from pathlib import Path
 from openai import OpenAI
 from agents import set_default_openai_key
+ 
 
 # --- API key ---
 api_key = os.getenv("OPENAI_API_KEY")
+print(api_key)
 
 if not api_key:
     raise RuntimeError("Please set OPENAI_API_KEY.")
