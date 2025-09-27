@@ -440,3 +440,59 @@ Allows control of your browser to interact with
 the web
 
 ## Importing Amazon Bedrock Agents + S3 vectors into AgentCore projects
+
+Bedrock has its own system for endpoints…
+
+* But maybe you want to build on that or something.
+* Building agents in Bedrock is super easy.
+* Importing is just a matter of running:
+
+```bash
+agentcore import-agent
+```
+
+* This generates Strands code (or LangChain / LangGraph) in an output directory.
+* From there you can test or deploy it like any other AgentCore agent.
+  
+**"You can import the agent you created in Bedrock into AgentCore and test or deploy it within your own code."**
+
+**!!! Importand Note:**
+
+**Now you don’t have to use OpenSearch for vector storage in Bedrock. You can store embeddings or RAG data directly in S3, making it simpler and serverless. OpenSearch is still optional for large-scale or complex search scenarios.**
+
+### Implementation
+
+1. Create an S3 Bucket for vector store `kntbucket`
+2. Upload `data_lines.txt`
+3. Go to Bedrock Service > Knowledge Bases
+4. Create > Unstructured data -knowledgebase with vector store call it `data-lines`. Select s3 as a data source.
+5. Data source name is `data-lines` as well.
+6. Select the bucket that you created before.
+7. Parsing strategy - Amazon Bedrock default parser - next
+8. Select embedding model as `Titan Text Embeddings V2 ` and s3 vector store - next
+9. Create Knowledge Base
+10. Select data-lines and hit `sync` button.
+11. Test Knowledge Base > Retrieval only: data sources and type: "Where was Data Created?"
+12. Go to Agents > Create agent name:`LtDataTest`
+13. Select model > `Claude 3.5 Sonnet` 
+14. Type "You are Lt. Commander Data from Star Trek The Next Generation. Answer all quieris in the syle of the character Data, using the provided knowledge base to ground your responses."
+15. Knowledge Bases > Add > select the `data-lines` > Save and Exit > Prepare
+16. "Data, how does your brain work?" investigate `Show trace`
+17.  We created the agent go back the agentcore
+18.  Create BedrockImport folder `cd BedrockImport`
+19.  `agentcore import-agent`
+20.  Select region as `Frankfurt`
+21.  Select the AgentTestAlias
+22.  - langchain (0.3.x) + langgraph (0.5.x) -> it bedrock converts agent to langchain
+     - » strands (1.0.x) -> select it for easy implementation. (AWS Bedrock framework)
+23. Enable verbose output for the generated agent? N
+24. ? Would you like to deploy the agent to AgentCore Runtime? (This will take
+a few minutes) (y/N) -Yes
+25. configure and launch process starts like before. And a bedrock agent deployed via agentcore.
+26. ? How would you like to run the agent? (Use arrow keys)
+ » Install dependencies and run locally
+   Run on AgentCore Runtime
+   Don't run now
+
+27.   Enter your question (or 'exit' to quit): "Tell me about Counselor Troi."
+28.   Go to AWS Console and delete agent and knowledge base.

@@ -1,0 +1,31 @@
+default_agent: agent_b9a585f6
+agents:
+  agent_b9a585f6:
+    name: agent_b9a585f6
+    entrypoint: /home/kvural/projects/aws-bedrock-agent-core/BedrockImport/output/strands_agent.py
+    platform: linux/arm64
+    container_runtime: docker
+    aws:
+      execution_role: arn:aws:iam::058264126563:role/AmazonBedrockAgentCoreSDKRuntime-eu-central-1-99fa436ae1
+      execution_role_auto_create: false
+      account: 058264126563
+      region: eu-central-1
+      ecr_repository: 058264126563.dkr.ecr.eu-central-1.amazonaws.com/bedrock-agentcore-agent_b9a585f6
+      ecr_auto_create: false
+      network_configuration:
+        network_mode: PUBLIC
+      protocol_configuration:
+        server_protocol: HTTP
+      observability:
+        enabled: true
+    bedrock_agentcore:
+      agent_id: agent_b9a585f6-B94QYW2unS
+      agent_arn: arn:aws:bedrock-agentcore:eu-central-1:058264126563:runtime/agent_b9a585f6-B94QYW2unS
+      agent_session_id: null
+    codebuild:
+      project_name: bedrock-agentcore-agent_b9a585f6-builder
+      execution_role: arn:aws:iam::058264126563:role/AmazonBedrockAgentCoreSDKCodeBuild-eu-central-1-99fa436ae1
+      source_bucket: bedrock-agentcore-codebuild-sources-058264126563-eu-central-1
+    authorizer_configuration: null
+    request_header_configuration: null
+    oauth_configuration: null
