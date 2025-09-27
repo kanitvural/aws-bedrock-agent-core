@@ -196,3 +196,215 @@ python data_test.py
 ```bash
 agentcore destroy
 ```
+
+## AgentCore Observability and CloudWatch Integration
+
+Go to CloudWatch > Application Signals > GenAI Observability > Bedrock AgentCore
+
+## Inbound and outbound OAuth integration with Cognito and AgentCore
+
+- Just set up Cognito user pool for OAuth / JWT
+
+- Specify the cliendID(s) and discovery URL when running `agentcore configure`
+
+### Outbound authorization
+
+- if you are using an external MCP server set uo credential providers with `aws agent-credential-provider` cli command
+
+- use `@requres_access_token` decorator on functions that access the external API
+- 
+### Inbound authorization
+
+```bash
+cd AgentCoreAuth
+python SetupCognito.py  
+
+Enter User Pool Name: agentcore
+Enter App Client Name: agentcore-app
+Enter Username: kvural
+Enter Permanent Password (will be hidden): 
+
+
+✅ Setup Complete
+Pool ID: eu-central-1_Btjy33tH1
+Discovery URL: https://cognito-idp.eu-central-1.amazonaws.com/eu-central-1_Btjy33tH1/.well-known/openid-configuration
+Client ID: 22artl47oq27reuv5chlinb4l9
+Bearer Token: eyJraWQiOiJOZEZ2MVBnd01LVmRCaER3YUZlY2VvYjR3VHlkbWQrVXZJOGVDNW1la1BJPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkMzc0ZDgyMi01MGUxLTcwNjUtYzg0Ny1hZjliZDE4MzJhOWIiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtY2VudHJhbC0xLmFtYXpvbmF3cy5jb21cL2V1LWNlbnRyYWwtMV9CdGp5MzN0SDEiLCJjbGllbnRfaWQiOiIyMmFydGw0N29xMjdyZXV2NWNobGluYjRsOSIsIm9yaWdpbl9qdGkiOiI3M2VhMGYzYi03ZjYzLTQ5YzYtOGM1OS02MDUzYTk0NTViNGEiLCJldmVudF9pZCI6IjUxNzhlZTlhLWU0ODctNDk4NC04Mzc3LTIxNGZhZmY4MGU3MiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE3NTg5MDExNDYsImV4cCI6MTc1ODkwNDc0NiwiaWF0IjoxNzU4OTAxMTQ2LCJqdGkiOiIyN2YzMzg1ZC1iZTk4LTRhZDEtYjc5My00ZWU4ZTVlMjVkZTgiLCJ1c2VybmFtZSI6Imt2dXJhbCJ9.BHz1l6JHYyDWe7qunx4jzTJYaSsMGd8BJ99GqCVVV3Szw56-_7X4zKFHDMrTAN5p-TVINo_iA3E3LvHTL0wBdazfKvKZoiAXM3GWrAKTWMRQcYEhLvltmoduRPqgAwjqZswF6etf4Z1B77EtyR1rwWG-1TRhB6RjLkmHsPzB7m5ErybHcRItUPoEVG6-qThCVNoP1OhW6vtf4W38g65ggN7JbERTGS7x1IN9Khp4pmESqeLvAimuJRbAcl9El82Pq5ebneID-tcN5hFbMbEyVCTI8mCrqDlVYtqXArDtVp9CH_oQB6ZokNCKiVi_TezcE2zIFG6X4Hl20FyhtTngcw
+```
+
+Go to Cognito > User pools
+
+Build the agent again
+
+```bash
+ cd AgentCoreRuntime 
+ agentcore configure -e data_agent_agentcore.py
+```
+
+press enter for steps and finally `yes` for OAuth authorizer
+
+```
+✓ Will auto-create execution role
+
+🏗️  ECR Repository
+Press Enter to auto-create ECR repository, or provide ECR Repository URI to use 
+existing
+ECR Repository URI (or press Enter to auto-create):
+✓ Will auto-create ECR repository
+
+🔍 Detected dependency file: requirements.txt
+Press Enter to use this file, or type a different path (use Tab for autocomplete):
+Path or Press Enter to use detected dependency file:
+✓ Using detected file: requirements.txt
+
+🔐 Authorization Configuration
+By default, Bedrock AgentCore uses IAM authorization.
+Configure OAuth authorizer instead? (yes/no) [no]: yes
+
+🔒 Request Header Allowlist
+Configure which request headers are allowed to pass through to your agent.
+Common headers: Authorization, X-Amzn-Bedrock-AgentCore-Runtime-Custom-*
+Configure request header allowlist? (yes/no) [no]:
+✓ Using default request header configuration
+Configuring BedrockAgentCore agent: data_agent_agentcore
+```
+
+```bash
+
+agentcore invoke "{\"prompt\": \"Data, who was Lal?\"}" --bearer-token eyJraWQiOiJOZEZ2MVBnd01LVmRCaER3YUZlY2VvYjR3VHlkbWQrVXZJOGVDNW1la1BJPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJkMzc0ZDgyMi01MGUxLTcwNjUtYzg0Ny1hZjliZDE4MzJhOWIiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtY2VudHJhbC0xLmFtYXpvbmF3cy5jb21cL2V1LWNlbnRyYWwtMV9CdGp5MzN0SDEiLCJjbGllbnRfaWQiOiIyMmFydGw0N29xMjdyZXV2NWNobGluYjRsOSIsIm9yaWdpbl9qdGkiOiI3M2VhMGYzYi03ZjYzLTQ5YzYtOGM1OS02MDUzYTk0NTViNGEiLCJldmVudF9pZCI6IjUxNzhlZTlhLWU0ODctNDk4NC04Mzc3LTIxNGZhZmY4MGU3MiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE3NTg5MDExNDYsImV4cCI6MTc1ODkwNDc0NiwiaWF0IjoxNzU4OTAxMTQ2LCJqdGkiOiIyN2YzMzg1ZC1iZTk4LTRhZDEtYjc5My00ZWU4ZTVlMjVkZTgiLCJ1c2VybmFtZSI6Imt2dXJhbCJ9.BHz1l6JHYyDWe7qunx4jzTJYaSsMGd8BJ99GqCVVV3Szw56-_7X4zKFHDMrTAN5p-TVINo_iA3E3LvHTL0wBdazfKvKZoiAXM3GWrAKTWMRQcYEhLvltmoduRPqgAwjqZswF6etf4Z1B77EtyR1rwWG-1TRhB6RjLkmHsPzB7m5ErybHcRItUPoEVG6-qThCVNoP1OhW6vtf4W38g65ggN7JbERTGS7x1IN9Khp4pmESqeLvAimuJRbAcl9El82Pq5ebneID-tcN5hFbMbEyVCTI8mCrqDlVYtqXArDtVp9CH_oQB6ZokNCKiVi_TezcE2zIFG6X4Hl20FyhtTngcw
+
+```
+## AgentCore Memory
+
+### Short-term
+- Chat history within a session / immediate context  
+- Enables conversations  
+- API centered around **Session objects** that contain **Events**  
+
+### Long-term
+- Stores **“extracted insights”**  
+- Summaries of past sessions  
+- Preferences (your coding style and favorite tools, for example)  
+- Facts you gave it in the past  
+- API involves **“Memory Records”** that store structured information derived from agent interactions  
+- **“Strategies”** for user preferences, semantic facts, session summaries  
+
+---
+
+### Storage
+- This all needs to be stored somewhere!  
+- The **OpenAI Agents SDK** gives you a SQLite implementation  
+- But maybe you need something that scales better, and is serverless  
+- Enter **AgentCore Memory**  
+### AgentCore Memory Integration
+
+- You’ll need to **modify your agent code** to integrate the AgentCore Memory API calls  
+- You need to explicitly **store, retrieve, and delete** these memories  
+- AWS’s own **Strands framework** makes this pretty easy  
+- Sample code is available for **LangChain / LangGraph** as well  
+- But for **OpenAI**, we’re on our own  
+
+---
+
+### OpenAI Agents
+- OpenAI Agents use **“Session” objects** for memory  
+- They don’t match up really well… but we can make it work…  
+
+##  Integrating short-term memory from AgentCore with OpenAI Agents
+
+Go to Amazon Bedrock AgentCore > Memory > Create memory
+
+You can create 
+
+- Short-term memory (raw event) expiration
+
+- Long-term memory extraction strategies - optional
+  - Summarization
+  - Semantic Memory
+  - User preferences
+
+### İmplementation
+
+1. Create a shorterm memory from AWS console
+2. 
+
+```bash
+cd AgentCoreMemory 
+```
+3. Open `data_agent_agentcore_memory.py`
+
+4. Get the `memory_id` from the console
+- `session_id` in real app you have a session id. We wrote mock data for this example.
+- `actor_id` the user id in the session
+
+```python
+#Session for memory, integrating AgentCore's memory features
+session = AgentCoreSession(
+    session_id="user-1234-convo-abcdef",
+    memory_id="memory_wyyo7-UQXcX18hTU",
+    actor_id="app/user-1234",
+    region="eu-central-1"
+)
+
+```
+
+Add session object At the bottom of the script
+
+```python
+@app.entrypoint
+async def invoke(payload):
+    user_message = payload.get("prompt", "Data, reverse the main deflector array!")
+    output = ''
+    try:
+        result = await Runner.run(data_agent, user_message, session=session) # here
+        output = result.final_output
+    except InputGuardrailTripwireTriggered:
+        output = "I'd really rather not talk about Tasha."
+
+    return {"result": output}
+
+if __name__ == "__main__":
+    app.run()
+```
+5. Build and deploy the agent
+  
+No auth 
+
+```bash
+agentcore configure -e data_agent_agentcore_memory.py
+export OPENAI_API_KEY="your_openai_api_key"
+agentcore launch --env OPENAI_API_KEY=$OPENAI_API_KEY
+agentcore invoke "{\"prompt\": \"Data, eject the warp core.\"}" 
+
+Response:
+{"result": "Ejecting the warp core is a critical procedure typically reserved for emergencies. 
+Please confirm the situation and provide authorization, or specify the emergency protocol to 
+proceed."}
+
+agentcore invoke "{\"prompt\": \"Confirmed, authorization code Picard-1\"}"
+
+Response:
+{"result": "Authorization code accepted. Initiating warp core ejection sequence as per Starfleet 
+emergency protocols. Please stand by for confirmation of successful ejection and containment 
+procedures."}
+
+agentcore invoke "{\"prompt\": \"What authorization code did i just use?\"}" 
+
+Response:
+{"result": "The authorization code you just used was \"Picard-1.\""}
+
+
+agentcore destroy
+```
+
+## Amazon Bedrock AgentCore Tools, and integrating the code interpreter
+
+- Browser Tool
+  
+Allows control of your browser to interact with
+the web
+- Code Interpreter
+  
+Lets you run code (in an isolated container)
+Python, JavaScript, TypeScript
+

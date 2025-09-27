@@ -8,7 +8,7 @@ username = input("Enter Username: ")
 permanent_password = getpass.getpass("Enter Permanent Password (will be hidden): ")
 
 # Constants
-region = 'us-east-1'
+region = 'eu-central-1'
 temporary_password = "TempPass123@#!"  # Must meet the password policy
 
 # Create the Cognito IDP client

@@ -15,7 +15,7 @@ from openai import OpenAI
 from agents import set_default_openai_key, Agent, Runner, function_tool, ModelSettings, RunConfig
 from agents.tool import WebSearchTool, FileSearchTool
 from agents.extensions.handoff_prompt import RECOMMENDED_PROMPT_PREFIX
-from agentcore_session import AgentCoreSession
+from agentcore_session import AgentCoreSession # Session for memory, integrating AgentCore's memory features
 
 # --- API key ---
 api_key = os.getenv("OPENAI_API_KEY")
@@ -114,9 +114,9 @@ from agents import (
 #Session for memory, integrating AgentCore's memory features
 session = AgentCoreSession(
     session_id="user-1234-convo-abcdef",
-    memory_id="data_app_memory-byciLwAvYg",
+    memory_id="memory_wyyo7-UQXcX18hTU",
     actor_id="app/user-1234",
-    region="us-east-1"
+    region="eu-central-1"
 )
 
 class YarGuardOutput(BaseModel):
