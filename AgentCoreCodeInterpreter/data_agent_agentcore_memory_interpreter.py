@@ -103,9 +103,9 @@ from agents import (
 
 session = AgentCoreSession(
     session_id="user-1234-convo-abcdef",
-    memory_id="data_app_memory-byciLwAvYg",
+    memory_id="memory_wyyo7-UQXcX18hTU",
     actor_id="app/user-1234",
-    region="us-east-1"
+    region="eu-central-1"
 )
 
 class YarGuardOutput(BaseModel):

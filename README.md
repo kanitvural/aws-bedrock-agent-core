@@ -399,12 +399,44 @@ agentcore destroy
 
 ## Amazon Bedrock AgentCore Tools, and integrating the code interpreter
 
-- Browser Tool
-  
-Allows control of your browser to interact with
-the web
 - Code Interpreter
   
 Lets you run code (in an isolated container)
 Python, JavaScript, TypeScript
 
+```bash
+ cd AgentCoreCodeInterpreter/
+```
+
+open `data_agent_agentcore_memory_interpreter.py` and set the `memory_id` like before.
+
+see the `function_tool` in the script
+
+```python
+# ------------------------------------------------------
+# NEW: AgentCore Code Interpreter tool (execute_python)
+# ------------------------------------------------------
+@function_tool
+def execute_python(code: str, description: str = "", clear_context: bool = False) -> str:
+...
+```
+```bash
+python data_agent_agentcore_memory_interpreter.py
+
+```
+
+```bash
+curl -X POST http://localhost:8080/invocations \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "Execute this Python code: print(\"Hello world!\")"}'
+
+{"result": "The Python code executed successfully and output: Hello world!"}%  
+
+```
+
+- Browser Tool
+  
+Allows control of your browser to interact with
+the web
+
+## Importing Amazon Bedrock Agents + S3 vectors into AgentCore projects
