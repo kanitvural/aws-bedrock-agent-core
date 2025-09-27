@@ -496,3 +496,31 @@ a few minutes) (y/N) -Yes
 
 27.   Enter your question (or 'exit' to quit): "Tell me about Counselor Troi."
 28.   Go to AWS Console and delete agent and knowledge base.
+
+
+## Introducing Amazon Bedrock AgentCore Gateway
+
+### AgentCore Gateway
+
+- Addresses the problem of using external tools at scale.
+- Converts APIs, Lambda functions, or other services into **MCP tools**.
+- Targets can be:
+  - **OpenAPI (REST)**
+  - **Smithy models** (AWS-specific)
+  - **Lambda**
+- Agents can then access them through **Gateway endpoints**.
+- Manages **OAuth security / credentials**.
+- Supports **semantic tool selection**.
+
+### AgentCore Identity
+
+- Different from OAuth identity for users and connecting to services.
+- Focuses on your **agent’s identity / identities**.
+- Provides **secure access to external tools and AWS services**.
+- Acts as a **central repository** for all of your agent identities.
+  - Similar to a **Cognito user pool**.
+- Supports **secure credential storage**.
+- OAuth 2.0 support:
+  - Built-in support for **Google, GitHub, Slack, Salesforce, Atlassian**.
+- There is a lot of depth to this, but you probably don’t need it right away.
+- Reference: [AWS Bedrock AgentCore Identity Docs](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html)
