@@ -143,7 +143,7 @@ agentcore launch --local
 Test
 
 ```bash
-agentcore invoke "{\"prompt\": \"Data, who was Lal?\"}"
+agentcore invoke '{"prompt": "Data, who was Lal?"}'
 ```
 ```bash
 Invocation failed: An error occurred (RuntimeClientError) when calling the 
@@ -157,7 +157,7 @@ see the cloudwatch logs: `  raise RuntimeError("Please set OPENAI_API_KEY.")`
 ```bash
 export OPENAI_API_KEY="your_openai_api_key"
 agentcore launch --env OPENAI_API_KEY=$OPENAI_API_KEY
-agentcore invoke "{\"prompt\": \"Data, who was Lal?\"}"
+agentcore invoke '{"prompt": "Data, who was Lal?"}'
 
 Response:
 {"result": "Lal was my daughter, an android I created using myself as a model. She 
