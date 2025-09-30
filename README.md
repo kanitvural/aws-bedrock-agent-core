@@ -524,3 +524,21 @@ a few minutes) (y/N) -Yes
   - Built-in support for **Google, GitHub, Slack, Salesforce, Atlassian**.
 - There is a lot of depth to this, but you probably don’t need it right away.
 - Reference: [AWS Bedrock AgentCore Identity Docs](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html)
+
+
+## Quick Start
+
+```bash
+agentcore configure \
+  --entrypoint multi_agent_restaurant.py \
+  --name multi_agent_restaurant \
+  --execution-role arn:aws:iam::058264126563:role/BedrockAgentCoreS3 \
+  --ecr 058264126563.dkr.ecr.eu-central-1.amazonaws.com/bedrock-agentcore-multi_agent_restaurant \
+  --requirements-file requirements.txt \
+  --authorizer-config 'null' \
+  --request-header-allowlist '' \
+  --region eu-central-1 \
+  --non-interactive
+
+ agentcore launch --env OPENAI_API_KEY=$OPENAI_API_KEY
+```
