@@ -18,7 +18,6 @@ from agents import (
 from agents.extensions.handoff_prompt import RECOMMENDED_PROMPT_PREFIX
 from dotenv import load_dotenv
 from bedrock_agentcore.runtime import BedrockAgentCoreApp
-# from agentcore_session import AgentCoreSession 
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
@@ -74,16 +73,6 @@ def list_airbnbs(city: str, pets: str, pool: str, sauna: str) -> str:
         df = df[df["Sauna"] == sauna.strip().lower()]
     return json.dumps(df.to_dict(orient="records"), default=str)
 
-# ---------------------------
-# SHARED MEMORY
-# ---------------------------
-# #Session for memory, integrating AgentCore's memory features
-# session = AgentCoreSession(
-#     session_id="user-1234-convo-abcdef",
-#     memory_id="memory_41z8c-ePVkW09Ii6",
-#     actor_id="app/user-1234",
-#     region="eu-central-1"
-# )
 
 # ---------------------------
 # COLLABORATORS
@@ -195,8 +184,9 @@ app = BedrockAgentCoreApp()
 @app.entrypoint
 async def invoke(payload):
     user_message = payload.get("prompt", "")
-    result = await Runner.run(supervisor_agent, user_message) # session=session
+    result = await Runner.run(supervisor_agent, user_message) 
     return {"result": result.final_output}
 
 if __name__ == "__main__":
     app.run()
+
